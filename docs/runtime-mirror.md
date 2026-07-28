@@ -14,6 +14,7 @@ and contract library, not as a data export.
 | Local-versus-judgment model routing | `runtime/routing.py` | Provider names, credentials, cost limits, and fallback behavior |
 | Reply and approval handling | `runtime/delivery.py` plus `runtime/loop.py` | Messaging connectors, identity routing, and natural-language parsing |
 | Background work lanes | `runtime/parallel.py` | Actual subagents, connector calls, retries, and cancellation policy |
+| Local climate acquisition and control | `skills/sensor-history/SKILL.md` plus `skills/climate-control-safety/SKILL.md` | Sensor identities, verified command packets, thresholds, presence devices, and private alert routes |
 | Dashboard and job health | `scripts/validate_public_surface.py` | Live probes, watchdogs, delivery telemetry, and private alert routes |
 | Persona and orchestration guidance | `SOUL.md` and `.hermes.md` | Household identity, preferences, memory, paths, accounts, and local policy |
 | Household skills | `skills/*/SKILL.md` | Private prompts, preferences, source references, personal policy, and credentials |
@@ -52,10 +53,10 @@ Keep these outside any public mirror:
 - real email, calendar, health, sleep, financial, insurance, or household
   records;
 - personal names, dates, phone numbers, chat IDs, local filesystem paths, and
-  production delivery targets;
+  production delivery targets, device identifiers, and network coordinates;
 - private prompt values, household policy, persona preferences, source-specific
   reference corpora, and browser/action scripts for authenticated portals;
-- archived or parked experiments whose fixtures contain household evidence.
+- archived or retired experiments whose fixtures contain household evidence.
 
 The closest safe public equivalent is a synthetic fixture plus an explicit
 adapter seam. Redaction is not a substitute for removing the original data

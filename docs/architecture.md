@@ -44,6 +44,12 @@ Delivery targets and approval language are explicit. Tests use a non-production 
 
 External action adapters are intentionally outside this package. Browser automation, claims portals, messaging clients, and other side effects should consume an authorized proposal only after their private deployment has performed its own target and credential checks.
 
+Deterministic device controllers follow a stricter boundary: record validated
+sensor evidence before deciding, select only physically verified full-state
+commands, enforce cooldown and command caps, and fail closed when evidence,
+state, presence, or delivery is ambiguous. The public contract contains no
+device identifiers or command payloads.
+
 ### State
 
 Canonical state is separate from generated projections. Reconciliation jobs repair drift deterministically; they do not become general-purpose planners.

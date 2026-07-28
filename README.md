@@ -52,13 +52,14 @@ accounts, credentials, or private adapter implementations.
 | Google Health / Fitbit | Readiness, sleep/activity, nutrition, hydration, and other optional wellness evidence |
 | Oura Ring | Private wearable sleep, readiness, recovery, and health projections |
 | KeyLifts | Training history and strength/readiness context |
-| Huckleberry | Private infant sleep, feeding, diaper, and growth context |
-| BroadLink | Read-only local room temperature and humidity history |
-| Hermes gateway channels | Chat delivery through configured Photon, Telegram, Discord, Slack, WhatsApp, Signal, or other Hermes connectors |
+| Huckleberry | Private infant sleep, feeding, diaper, growth, and recorded sleep-condition context |
+| BroadLink | Validated local room history and an optional fail-closed, allowlisted climate-control adapter |
+| Image generation | Private home-design concepts grounded in measured plans, original photos, and reusable room views |
+| Hermes gateway channels | Chat delivery through configured Telegram, Discord, Slack, WhatsApp, Signal, or other active Hermes connectors |
 | Local dashboard and optional ngrok | Human-facing projections, completion views, and remote access to a deliberately exposed dashboard |
 | Local vault projection | Optional Obsidian-style, local-first views of canonical household domains |
 | Web search and browser/action adapters | Current authoritative research and explicitly approved authenticated workflows |
-| Hermes memory and sidecars | Built-in memory by default; Honcho is optional, while the LightRAG experiment remains parked and disabled |
+| Hermes memory and sidecars | Built-in memory by default; retired or cold-archived sidecars stay disabled unless deliberately restored |
 
 Some of these are active in the reference personal runtime and some are
 optional adapters. A deployment should enable only the sources it can authorize,
@@ -71,7 +72,7 @@ validate, and keep within its privacy policy.
 - `SOUL.md` and `.hermes.md` — deployment-neutral persona and orchestration guidance that preserve the privacy, routing, state, and quiet-output boundaries.
 - `prompts/cron/` — one sanitized prompt contract per cron, including the bounded judgment and deterministic no-op rules.
 - `scripts/` — safe public entrypoints for projection, cycle execution, state-audit preview, and surface validation.
-- `skills/` — generic contracts for briefing, proposal, question, reconciliation, evidence, health, source projection, staged triage, document routing, reminders, architecture, and action gates.
+- `skills/` — generic contracts for briefing, proposal, question, reconciliation, evidence, health, source projection, staged triage, home design, deterministic climate safety, document routing, reminders, architecture, and action gates.
 - `tests/` — standard-library tests for the public runtime layer.
 - `docs/architecture.md` and `docs/runtime-mirror.md` — the runtime boundary and private-mirror workflow.
 - `examples/runtime-surface.json` — an inventory of private Python surfaces and their safe public equivalents.
@@ -156,10 +157,12 @@ systems that job uses:
   calendars you intend to expose;
 - configure separate Oura, Huckleberry, Fitbit/Google Health, and KeyLifts
   access where applicable;
-- grant only local-network read access to BroadLink sensors unless an explicit
-  approved control adapter is intentionally added; and
-- configure optional ngrok, browser, memory-sidecar, or other service tokens
-  privately, if you use those adapters.
+- grant only the minimum local-network access required by BroadLink sensors and
+  any deliberately enabled, full-state control adapter;
+- configure image generation and private design-source access separately if
+  using the Home Design Director workflow; and
+- configure optional ngrok, browser, or restored sidecar tokens privately only
+  when those adapters are intentionally active.
 
 Keep OAuth files, client secrets, API keys, session cookies, local databases,
 and provider exports outside Git. The public templates cannot work with live

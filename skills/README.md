@@ -18,8 +18,11 @@ skills:
 - `email-triage/` preserves the staged metadata-first classifier pipeline.
 - `source-projection/` covers registered adapters and generated projections.
 - `state-reconciliation/` covers reply closure and completion audits.
-- `wellness-evidence/`, `sensor-history/`, and `quota-watch/` cover optional
-  evidence streams without exposing their integrations.
+- `wellness-evidence/`, `sensor-history/`, `climate-control-safety/`, and
+  `quota-watch/` cover optional evidence and deterministic control without
+  exposing their integrations.
+- `home-design-director/` covers evidence-grounded room planning, comparison,
+  rendering, and approval-gated procurement.
 - `document-routing/` covers private manifest-first document retrieval.
 - `reference-grounding/` covers local references plus current authoritative
   sources for consequential claims.

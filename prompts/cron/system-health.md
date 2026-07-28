@@ -12,7 +12,7 @@ Run deterministic checks and report the layers separately:
 - delivery success versus delivery configuration; and
 - process or endpoint liveness.
 
-Treat intentionally disabled or parked components as expected when the private
+Treat intentionally disabled, retired, or cold-archived components as expected when the private
 configuration says so. Do not call a green scheduler timestamp healthy when a
 job has an error, a source is stale, or delivery failed. Report a small,
 actionable diagnosis with the owning component and the safest next check.

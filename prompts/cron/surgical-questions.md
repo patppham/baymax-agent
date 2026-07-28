@@ -15,4 +15,6 @@ owner. Include enough context that the owner does not need to reconstruct the
 scan, but do not disclose unrelated private data.
 
 Do not ask for information already present, turn curiosity into a task, repeat
-a handled question, or send a shared message without explicit routing.
+a handled question, or send a shared message without explicit routing. When
+one open loop in a milestone is still on cooldown, suppress its sibling
+questions too; a different wording must not bypass the milestone-level pause.

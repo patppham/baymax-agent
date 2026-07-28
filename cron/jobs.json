@@ -139,12 +139,12 @@
       "delivery": {"destination": "example:non-production", "require_approval": true}
     },
     {
-      "id": "room-climate-log",
-      "role": "read-only local sensor history",
-      "schedule": {"kind": "interval", "every": "60m"},
+      "id": "room-climate-controller",
+      "role": "unified sensor history and fail-closed local control",
+      "schedule": {"kind": "interval", "every": "5m"},
       "execution": "no_agent",
-      "prompt": "prompts/cron/room-climate-log.md",
-      "skills": ["skills/sensor-history/SKILL.md"],
+      "prompt": "prompts/cron/room-climate-controller.md",
+      "skills": ["skills/sensor-history/SKILL.md", "skills/climate-control-safety/SKILL.md"],
       "script": "scripts/run_projection.py",
       "task": "projection",
       "delivery": {"destination": "local-only", "require_approval": false}

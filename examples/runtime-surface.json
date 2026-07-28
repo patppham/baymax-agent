@@ -51,13 +51,13 @@
       "notes": "Map local and judgment lanes to providers only in a private config."
     },
     {
-      "private_area": "watchdogs, health checks, background workers, and sidecars",
+      "private_area": "watchdogs, health checks, background workers, and active services",
       "public_equivalent": "runtime/parallel.py, cron/jobs.json, and scripts/*",
       "handling": "sanitized-entrypoints",
       "notes": "The public scripts validate contracts and never recover or control a real service."
     },
     {
-      "private_area": "browser, claims, messaging, sensor, and memory adapters",
+      "private_area": "browser, claims, messaging, sensor/control, design-source, and memory adapters",
       "public_equivalent": "runtime/delivery.py and documented adapter seams",
       "handling": "private-only-adapter",
       "notes": "External side effects require private credentials and an approval gate."
@@ -114,7 +114,7 @@
     "scripts_and_wrappers": [
       "scripts/evidence_scout.py",
       "scripts/evidence_scout_cron.py",
-      "scripts/room_climate_log.py",
+      "scripts/room_climate_control.py",
       "scripts/wellness_coach_context.py",
       "scripts/quota_watch.py",
       "scripts/brief_context.py",
@@ -128,11 +128,11 @@
       "scripts/surgical_questions.py",
       "scripts/message_notify.py",
       "scripts/test_evidence_scout.py",
-      "scripts/test_room_climate_log.py",
+      "scripts/test_room_climate_control.py",
       "scripts/test_runtime_wrappers.py",
       "scripts/todo_audit.py"
     ],
-    "parked_retrieval_and_evaluation": [
+    "retired_retrieval_and_evaluation": [
       "retrieval/scripts/build_eval_corpus.py",
       "retrieval/scripts/check_option.py",
       "retrieval/scripts/check_pipeline_status.py",
@@ -158,6 +158,6 @@
     "auth, environment, database, session, log, cache, and vault state",
     "private prompt values, persona values, reference corpora, and household-specific plans",
     "lsp/node_modules and other vendored dependency trees",
-    "parked retrieval indexes and household evaluation corpora"
+    "retired retrieval indexes and household evaluation corpora"
   ]
 }

@@ -14,6 +14,9 @@ audience scope before interpreting anything. Connect related obligations when
 the evidence supports the connection. Prefer one useful implication over a
 long list of facts.
 
+Do not pad the brief with generic reassurance or repeat an unchanged
+interpretation merely because the underlying metric appears again.
+
 Return a concise brief with:
 
 1. what materially changed;
