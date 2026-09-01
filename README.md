@@ -1,104 +1,123 @@
-# Hermes Runtime Patterns
+<p align="center">
+  <a href="https://ai.patonpoints.com/projects/baymax/">
+    <img src="https://ai.patonpoints.com/images/baymax-profile.jpg" width="96" alt="Baymax Agent">
+  </a>
+</p>
 
-A sanitized, shareable reference for building a local [Hermes Agent](https://github.com/NousResearch/hermes-agent) runtime.
+<h1 align="center">Baymax Agent</h1>
 
-This is an independent companion project, not an official Hermes distribution. It documents a small set of reusable runtime patterns without publishing a live assistant configuration.
+<p align="center"><strong>An open-source personal agent that notices what changed, prepares what matters, and follows through.</strong></p>
 
-## Hermes plus a product layer
+<p align="center">
+  <a href="https://ai.patonpoints.com/projects/baymax/">Product story</a> ·
+  <a href="#quick-start">Quick start</a> ·
+  <a href="docs/architecture.md">Architecture</a> ·
+  <a href="#privacy-boundary">Privacy boundary</a>
+</p>
 
-[Hermes Agent](https://github.com/NousResearch/hermes-agent) is an open-source,
-model-flexible agent runtime from Nous Research. It provides the conversation
-loop, model/provider routing, tool use, terminal interface, gateway, and
-messaging surfaces.
+Baymax is a local-first personal agent and household chief of staff built on
+[Hermes Agent](https://github.com/NousResearch/hermes-agent). It lives in the
+messaging channels you already use, checks approved sources in the background,
+and turns changing context into a small number of useful decisions and actions.
 
-This project is the layer built on top of that runtime to turn a capable agent
-into a persistent local-first chief of staff. It adds the operating model,
-prompts, persona, source projections, state contracts, scheduled loops, and
-approval boundaries that make the system behave like a product rather than a
-collection of ad-hoc chats.
+It is designed as a chief of staff, not another chatbot: proactive without
+being noisy, personal without leaking context, and capable of acting without
+silently crossing an approval boundary.
 
-| Regular Hermes provides | This runtime layer adds |
+> **Less to remember. Less to chase. More handled.**
+
+This repository is the sanitized, open-source product layer behind the
+[Baymax case study](https://ai.patonpoints.com/projects/baymax/). It includes
+working dependency-free runtime primitives, synthetic examples, persona and
+skill contracts, and disabled-by-default scheduled workflows. Private accounts,
+records, credentials, destinations, and action adapters are deliberately not
+published.
+
+## What Baymax does
+
+| Outcome | How the agent behaves |
 | --- | --- |
-| Model and tool orchestration | Observe → Verify → Decide → Act → Learn loops |
-| Interactive and gateway conversations | 16 scheduled, inspectable cron contracts and prompts |
-| Flexible provider integrations | Deterministic projections, freshness metadata, and private adapters |
-| The ability to take actions | Approval-gated, auditable delivery and action boundaries |
-| Conversation context | Canonical milestones, reconciliation, and quiet/no-op behavior |
-| A general agent identity | `SOUL.md`, `.hermes.md`, and reusable product skills |
+| **Your morning, already sorted** | Combines inbox and calendar changes into one brief: what changed, what is handled, and the one decision worth making. |
+| **It sees around corners** | Scans a bounded planning horizon, proposes at most a few useful next steps, and waits for an add or skip. |
+| **Health context, carefully bounded** | Preserves freshness and missing data, labels correlations as observations, and never turns them into diagnoses. |
+| **Context that closes the loop** | Keeps canonical commitments separate from conversational memory, prepares the next step, and reconciles approved outcomes once. |
+| **Quiet when nothing needs you** | Skips empty updates, repeated reminders, and model calls when deterministic checks find no useful signal. |
 
-## Why this is useful
+Representative output stays brief and action-shaped:
 
-The product value is a reduction in coordination tax. Instead of asking an
-agent to rediscover context every time, the runtime continuously prepares the
-right evidence, notices meaningful changes, proposes bounded next steps, and
-closes the loop when an approved action is complete. It stays quiet when there
-is nothing useful to say, keeps private-owner information out of shared output,
-and leaves provider credentials and side effects behind replaceable adapters.
+```text
+DAILY BRIEF · 09:45
 
-That pattern is useful for a household chief of staff, a personal operating
-system, or a small team's recurring operations. The public repository gives an
-agent enough structure to reproduce the behavior without publishing the data,
-identity, or integrations that make one deployment personal.
+Your day is clear until 2:00.
+One conflict needs a decision; the options are ready.
+Twelve low-priority messages were filtered out.
 
-## Integrated systems
+Review the conflict →
+```
 
-The private runtime is an orchestration layer over real sources and delivery
-surfaces. The public repository documents the seams; it does not include the
-accounts, credentials, or private adapter implementations.
+## The agent loop
 
-| Integration | What it contributes |
+```mermaid
+flowchart LR
+  A[Observe] --> B[Verify]
+  B --> C[Decide]
+  C --> D[Act]
+  D --> E[Reconcile]
+  E --> A
+  S[Canonical state] --> A
+  S --> E
+  B -. no useful change .-> Q[Stay quiet]
+  C -. consequential action .-> H[Human approval]
+```
+
+1. **Observe** changes across explicitly registered sources.
+2. **Verify** freshness, ownership, cancellations, duplicates, and source health with code.
+3. **Decide** with a model only when bounded context needs judgment.
+4. **Act** through an allowlisted private adapter, with approval where consequences matter.
+5. **Reconcile** the confirmed result back into canonical state.
+
+Hermes provides the conversation loop, model and tool orchestration, gateway,
+memory, and provider flexibility. Baymax adds the operating model that makes
+those capabilities dependable over time.
+
+| Hermes provides | Baymax adds |
 | --- | --- |
-| Google Workspace via `gog` | Gmail triage, shared Google Calendar, Drive, Docs, Sheets, and Contacts workflows |
-| Google Health / Fitbit | Readiness, sleep/activity, nutrition, hydration, and other optional wellness evidence |
-| Oura Ring | Private wearable sleep, readiness, recovery, and health projections |
-| KeyLifts | Training history and strength/readiness context |
-| Huckleberry | Private infant sleep, feeding, diaper, growth, and recorded sleep-condition context |
-| BroadLink | Validated local room history and an optional fail-closed, allowlisted climate-control adapter |
-| Image generation | Private home-design concepts grounded in measured plans, original photos, and reusable room views |
-| Hermes gateway channels | Chat delivery through configured Telegram, Discord, Slack, WhatsApp, Signal, or other active Hermes connectors |
-| Local dashboard and optional ngrok | Human-facing projections, completion views, and remote access to a deliberately exposed dashboard |
-| Local vault projection | Optional Obsidian-style, local-first views of canonical household domains |
-| Web search and browser/action adapters | Current authoritative research and explicitly approved authenticated workflows |
-| Hermes memory and sidecars | Built-in memory by default; retired or cold-archived sidecars stay disabled unless deliberately restored |
-
-Some of these are active in the reference personal runtime and some are
-optional adapters. A deployment should enable only the sources it can authorize,
-validate, and keep within its privacy policy.
+| Agent loop and tool use | Proactive scheduled workflows and quiet/no-op behavior |
+| Messaging gateways | Audience-aware private/shared routing |
+| Models and providers | Deterministic and judgment execution lanes |
+| Conversation memory | Curated recall plus canonical state boundaries |
+| Ability to take actions | Approval gates, allowlists, verification, and reconciliation |
+| Extensible skills | Product skills for briefings, planning, health evidence, inboxes, devices, and recovery |
 
 ## What is included
 
-- `runtime/` — a dependency-free reference implementation of bounded context building, a five-stage closed loop, deterministic state reconciliation, routing boundaries, bounded background fan-out, outcome summaries, and explicit delivery authorization.
-- `cron/jobs.json` — the full sanitized schedule shape: 16 generic job contracts, disabled by default, with no production destinations. Every job points to an inspectable prompt and skill contract.
-- `SOUL.md` and `.hermes.md` — deployment-neutral persona and orchestration guidance that preserve the privacy, routing, state, and quiet-output boundaries.
-- `prompts/cron/` — one sanitized prompt contract per cron, including the bounded judgment and deterministic no-op rules.
-- `scripts/` — safe public entrypoints for projection, cycle execution, state-audit preview, and surface validation.
-- `skills/` — generic contracts for briefing, proposal, question, reconciliation, evidence, health, source projection, staged triage, home design, deterministic climate safety, document routing, reminders, architecture, and action gates.
-- `tests/` — standard-library tests for the public runtime layer.
-- `docs/architecture.md` and `docs/runtime-mirror.md` — the runtime boundary and private-mirror workflow.
-- `examples/runtime-surface.json` — an inventory of private Python surfaces and their safe public equivalents.
-- `examples/` — provider, job, source, skill, and runtime-input placeholders.
+- `runtime/` — dependency-free context filtering, routing, approval,
+  reconciliation, safe outcome summaries, and bounded background fan-out.
+- `cron/jobs.json` — 20 sanitized workflow contracts, all disabled by default
+  and limited to local or synthetic destinations.
+- `prompts/cron/` — inspectable prompt contracts for every scheduled workflow.
+- `skills/` — reusable boundaries for chief-of-staff behavior, staged triage,
+  audience routing, curated memory, health evidence, deterministic devices,
+  guarded inbox automation, backup/restore, and external actions.
+- `SOUL.md` and `.hermes.md` — a deployment-neutral identity and operating
+  contract for a calm, precise personal agent.
+- `examples/` — synthetic configuration, source, surface, and runtime inputs.
+- `scripts/` and `tests/` — safe local demos, contract validation, and
+  standard-library tests.
 
-## Privacy boundary
+The September 2026 refresh incorporates the most reusable lessons from the
+live deployment since this repository first launched:
 
-This repository contains only generic runtime code, documentation, and synthetic examples. It does not contain:
+- messaging is audience-aware and adapter-neutral rather than tied to one chat platform;
+- curated project recall is separate from canonical commitments and generated views;
+- inbox automation uses deterministic rules first and bounded classification only for ambiguity;
+- device automation records evidence before acting, guards known baselines, and fails closed;
+- backups are encrypted and paired with recurring restore preflight checks; and
+- retired experiments stay retired instead of being revived by generic health repair.
 
-- credentials, tokens, auth state, databases, logs, or session history;
-- real messages, email/calendar identifiers, health records, financial records, or household data;
-- names, addresses, phone numbers, production destinations, or local machine paths;
-- a copy of a live runtime or upstream source checkout.
+## Quick start
 
-Every identifier in `examples/` is synthetic. Keep real runtime configuration in a private repository and inject secrets through the environment or a local secret manager.
-
-## Install the runtime layer
-
-This repository is an overlay and reference implementation, not a fork of
-Hermes and not a separately packaged replacement. Install the upstream runtime
-first, then keep this layer in a separate private runtime repository.
-
-### 1. Install upstream Hermes
-
-Use the official installer for your platform, then run its setup and health
-checks:
+### 1. Install Hermes Agent
 
 ```bash
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
@@ -107,122 +126,85 @@ hermes doctor
 hermes setup
 ```
 
-See the [upstream installation documentation](https://github.com/NousResearch/hermes-agent#quick-install)
-for Windows, Termux, source-checkout, and provider-specific paths. Keep the
-upstream checkout independently versioned. Do not copy this repository into
-the upstream `hermes-agent/` source directory.
+See the [upstream documentation](https://github.com/NousResearch/hermes-agent#quick-install)
+for platform and provider-specific setup.
 
-### 2. Install this public layer
-
-Clone it beside the Hermes home and run the reference checks:
+### 2. Clone Baymax Agent
 
 ```bash
-git clone https://github.com/patppham/hermes-agent-public.git "$HOME/.hermes-runtime-template"
-cd "$HOME/.hermes-runtime-template"
+git clone https://github.com/patppham/baymax-agent.git "$HOME/.baymax-agent"
+cd "$HOME/.baymax-agent"
 python3 -m unittest discover -s tests -v
 python3 scripts/validate_public_surface.py
 ```
 
-### 3. Create a private runtime overlay
-
-Copy the templates into a separate private repository, replace placeholders
-with your own adapters and policy, then sync the reviewed persona and runtime
-guidance into the Hermes home that your deployment loads:
+### 3. Run the synthetic loop
 
 ```bash
-PRIVATE_RUNTIME="$HOME/.hermes-runtime-private"
+python3 -m runtime \
+  --input examples/runtime-input.json \
+  --now 2026-07-16T12:00:00Z
+```
+
+The demo observes and verifies synthetic records, prepares a bounded proposal,
+waits for approval, and reconciles synthetic completion state without sending
+anything. Add `--approved` to exercise the non-production authorization path;
+the public package still never executes an external action.
+
+### 4. Build your private overlay
+
+Keep the upstream checkout, this public blueprint, and your private deployment
+as separately versioned repositories. Copy only the contracts you intend to
+use, then implement private source, state, delivery, and action adapters behind
+them.
+
+```bash
+PRIVATE_RUNTIME="$HOME/.baymax-private"
 mkdir -p "$PRIVATE_RUNTIME"
 cp -R SOUL.md .hermes.md cron prompts skills "$PRIVATE_RUNTIME"/
-
-# After reviewing the private copies, use the paths expected by your Hermes home.
-cp "$PRIVATE_RUNTIME/SOUL.md" "$HOME/.hermes/SOUL.md"
-cp "$PRIVATE_RUNTIME/.hermes.md" "$HOME/.hermes.md"
 ```
 
-Then implement the private source, state, delivery, and action adapters. Keep
-real schedules, recipients, credentials, generated projections, logs, and
-records in the private overlay. The public cron manifest is disabled by
-default and uses synthetic destinations until those adapters are deliberately
-configured.
+Replace placeholders only in the private overlay. Authenticate your own model,
+messaging, email, calendar, health, device, browser, and storage integrations
+with the minimum scopes they require. Never commit those credentials or the
+records they unlock.
 
-### 4. Authenticate your own integrations
+Start with [`docs/runtime-mirror.md`](docs/runtime-mirror.md) for the replication
+sequence and [`examples/runtime-surface.json`](examples/runtime-surface.json)
+for the audited private-to-public responsibility map.
 
-Every operator must create and authorize their own accounts. There is no shared
-demo account, bundled OAuth token, API key, cookie, or provider session in this
-repository. Before enabling a job, configure the credentials and scopes for the
-systems that job uses:
+## Privacy boundary
 
-- authenticate the Hermes model/provider and gateway channel you choose;
-- complete `gog`'s own Google OAuth setup for the Workspace accounts and
-  calendars you intend to expose;
-- configure separate Oura, Huckleberry, Fitbit/Google Health, and KeyLifts
-  access where applicable;
-- grant only the minimum local-network access required by BroadLink sensors and
-  any deliberately enabled, full-state control adapter;
-- configure image generation and private design-source access separately if
-  using the Home Design Director workflow; and
-- configure optional ngrok, browser, or restored sidecar tokens privately only
-  when those adapters are intentionally active.
+This repository contains generic code, documentation, contracts, and synthetic
+fixtures. It does **not** contain:
 
-Keep OAuth files, client secrets, API keys, session cookies, local databases,
-and provider exports outside Git. The public templates cannot work with live
-data until your private adapter layer supplies authenticated, bounded records.
+- credentials, tokens, OAuth state, cookies, databases, logs, or sessions;
+- real messages, calendar identifiers, health, financial, insurance, or household records;
+- names, addresses, phone numbers, production destinations, device identifiers, or local paths;
+- private prompts, source-specific corpora, or authenticated action scripts; or
+- a copy of the live runtime or upstream Hermes checkout.
 
-## How to use the patterns
-
-1. Install and configure the upstream Hermes Agent project.
-2. Copy the example shapes into a private runtime repository.
-3. Replace placeholders with local values without committing them.
-4. Keep generated projections, logs, sessions, and account routing private.
-
-Run the sanitized reference runtime locally:
-
-```bash
-python3 -m unittest discover -s tests -v
-python3 scripts/validate_public_surface.py
-python3 -m runtime --input examples/runtime-input.json --now 2026-07-16T12:00:00Z
-```
-
-The demo prints the complete `Observe → Verify → Decide → Act → Learn` cycle. It proposes a synthetic brief, waits for approval, and reconciles canonical completion state without sending anything. Pass `--approved` to see the non-production destination authorization path.
-
-## The useful part of the loop
-
-The public layer captures the behavior that makes an assistant feel proactive while keeping integrations replaceable:
-
-- Observe and verify: fresh, enabled, non-cancelled inputs are bounded before any decision callback sees them.
-- Decide: inject a model or rules callback through `run_cycle(..., decide=...)`; the callback receives only the verified snapshot.
-- Route: deterministic work stays on the `local` lane; synthesis and proposals are marked for the `judgment` lane. Provider names remain private deployment choices.
-- Act: proposals are bounded and held behind explicit approval. The package authorizes a destination but never executes an external action.
-- Learn: canonical milestones reconcile generated completion state, and `outcome` reports counts without copying source content.
-- Fan out: `run_parallel` runs named background tasks with a small worker cap and records only safe success/error classes.
-
-This is the shareable core behind daily briefs, proposal scouts, evidence-only coaching, safe browser/action adapters, and parallel background jobs. The connectors, prompts, model credentials, household policy, and real action adapters stay outside this repository.
-
-## Mirror the full runtime shape
-
-The private runtime has more integration-specific Python than belongs in a
-public repository. The public mirror keeps the same responsibilities, prompt
-shape, persona boundaries, skill contracts, and schedule shape while replacing
-household implementations with adapter seams. The audited surface inventory
-covers 76 private Python paths, 16 cron jobs, and 55 skill/reference files
-without copying their private contents.
-Start with [`docs/runtime-mirror.md`](docs/runtime-mirror.md), then use
-[`SOUL.md`](SOUL.md), [`.hermes.md`](.hermes.md), [`prompts/README.md`](prompts/README.md),
-[`cron/jobs.json`](cron/jobs.json), the surface inventory, and the skill
-contracts to build the private pieces locally.
+Every external effect belongs behind a private adapter with an explicit target,
+policy, and approval boundary. Run `python3 scripts/validate_public_surface.py`
+before publishing any derived repository.
 
 ## Design principles
 
-- Prefer deterministic projections and reconciliation for state changes.
-- Give model-driven jobs bounded, already-prepared context.
-- Separate canonical state from generated views.
-- Make delivery targets explicit and non-production by default.
-- Treat privacy and secret scanning as release gates.
+- Code where facts must be exact; models where judgment adds value.
+- Canonical state is separate from memory and generated views.
+- Missing evidence stays missing.
+- Private context does not enter shared output by accident.
+- Consequential actions stop for approval.
+- Silence is a valid and often preferred outcome.
 
-## Contributing
+## Project status
 
-Only add generic documentation, code, or synthetic examples. Do not add real account identifiers, personal records, copied message content, credentials, local paths, or production routing. See [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`SECURITY.md`](SECURITY.md).
+Baymax Agent is an independent companion to Hermes Agent, not an official Nous
+Research distribution and not a turnkey hosted service. The code here is a safe
+reference implementation; the live product depends on private integrations and
+household policy that each operator must supply for themselves.
 
-## License
+Contributions must remain generic and synthetic. See [`CONTRIBUTING.md`](CONTRIBUTING.md)
+and [`SECURITY.md`](SECURITY.md).
 
 Released under the [MIT License](LICENSE).

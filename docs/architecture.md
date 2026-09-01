@@ -8,7 +8,7 @@ flowchart LR
   B --> C[02 Verify]
   C --> D[03 Decide]
   D --> E[04 Act behind approval]
-  E --> F[05 Learn and reconcile]
+  E --> F[05 Reconcile]
   F --> B
   G[Canonical state] --> B
   G --> F
@@ -44,6 +44,10 @@ Delivery targets and approval language are explicit. Tests use a non-production 
 
 External action adapters are intentionally outside this package. Browser automation, claims portals, messaging clients, and other side effects should consume an authorized proposal only after their private deployment has performed its own target and credential checks.
 
+Messaging adapters preserve audience as part of the delivery contract. A
+provider change must not collapse owner-private and shared routes, and replies
+must reconcile against the question or proposal that produced them.
+
 Deterministic device controllers follow a stricter boundary: record validated
 sensor evidence before deciding, select only physically verified full-state
 commands, enforce cooldown and command caps, and fail closed when evidence,
@@ -53,6 +57,17 @@ device identifiers or command payloads.
 ### State
 
 Canonical state is separate from generated projections. Reconciliation jobs repair drift deterministically; they do not become general-purpose planners.
+
+Curated memory is a separate recall layer. It can preserve durable project
+decisions and reusable constraints, but current source systems and canonical
+state always win when they disagree.
+
+### Recovery
+
+Backups are useful only when restore is exercised. Private deployments should
+encrypt backups before transfer, avoid copying transient runtime state blindly,
+and run a recurring restore preflight that verifies the archive, manifest, and
+documented recovery path without replacing the live runtime.
 
 ### Outcomes
 

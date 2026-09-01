@@ -130,8 +130,11 @@ class LoopTests(unittest.TestCase):
         self.assertEqual(cycle["decide"]["route"]["lane"], "judgment")
         self.assertEqual(cycle["act"]["status"], "awaiting_approval")
         self.assertEqual(cycle["act"]["destination"], None)
-        self.assertEqual(cycle["learn"]["repairs"][0]["item_id"], "launch")
-        self.assertEqual(cycle["learn"]["completion"]["items"]["launch"]["status"], "done")
+        self.assertEqual(cycle["reconcile"]["repairs"][0]["item_id"], "launch")
+        self.assertEqual(
+            cycle["reconcile"]["completion"]["items"]["launch"]["status"],
+            "done",
+        )
         self.assertEqual(cycle["outcome"]["signals_observed"], 1)
 
     def test_cycle_skips_decision_when_no_fresh_signal_exists(self):

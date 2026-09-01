@@ -1,9 +1,9 @@
 {
   "purpose": "Sanitized inventory of private runtime responsibilities that a public agent may mirror without copying private implementation or data. Path labels are genericized responsibility names, not literal private paths.",
   "audited_surface_counts": {
-    "private_python_paths": 76,
-    "private_cron_jobs": 16,
-    "private_skill_and_reference_files": 55,
+    "private_python_paths": 98,
+    "private_cron_jobs": 24,
+    "private_skill_and_reference_files": 92,
     "vendored_dependency_files_excluded": true,
     "path_labels_are_genericized": true
   },
@@ -30,7 +30,7 @@
       "private_area": "cron prompt field for every scheduled job",
       "public_equivalent": "cron/jobs.json plus prompts/cron/*.md",
       "handling": "sanitized-prompt-template",
-      "notes": "All 16 public jobs point to inspectable prompt contracts. Names, dates, recipients, source details, and private routing remain placeholders."
+      "notes": "All 20 public jobs point to inspectable prompt contracts. Names, dates, recipients, source details, and private routing remain placeholders."
     },
     {
       "private_area": "SOUL.md and .hermes.md",
@@ -61,6 +61,30 @@
       "public_equivalent": "runtime/delivery.py and documented adapter seams",
       "handling": "private-only-adapter",
       "notes": "External side effects require private credentials and an approval gate."
+    },
+    {
+      "private_area": "curated project memory and audit",
+      "public_equivalent": "skills/curated-memory/SKILL.md",
+      "handling": "contract-only",
+      "notes": "Private notes remain human-reviewable and subordinate to canonical source systems."
+    },
+    {
+      "private_area": "audience-aware messaging and reply binding",
+      "public_equivalent": "skills/message-routing/SKILL.md",
+      "handling": "private-only-adapter",
+      "notes": "The provider is replaceable; recipients, channel identifiers, messages, and credentials remain private."
+    },
+    {
+      "private_area": "guarded mail automation and authenticated device baselines",
+      "public_equivalent": "skills/mail-guardian/SKILL.md plus skills/device-baseline-guard/SKILL.md",
+      "handling": "contract-only",
+      "notes": "Public contracts preserve deterministic-first decisions, bounded ambiguity, and fail-closed behavior without identifiers or payloads."
+    },
+    {
+      "private_area": "encrypted backups and restore drills",
+      "public_equivalent": "skills/backup-recovery/SKILL.md plus prompts/cron/encrypted-backup.md and restore-preflight.md",
+      "handling": "contract-only",
+      "notes": "Archive selection, keys, remote storage, and restore destinations remain private."
     }
   ],
   "private_python_paths": {
@@ -72,6 +96,8 @@
     ],
     "dashboard_core_and_loops": [
       "dashboard/answer_ingest.py",
+      "dashboard/agent_memory_audit.py",
+      "dashboard/local_display.py",
       "dashboard/wellness_coach_context.py",
       "dashboard/wellness_readiness.py",
       "dashboard/command.py",
@@ -100,6 +126,8 @@
     ],
     "dashboard_tests": [
       "dashboard/test_wellness_nutrition.py",
+      "dashboard/test_agent_memory_audit.py",
+      "dashboard/test_local_display.py",
       "dashboard/test_chief_of_staff_loop.py",
       "dashboard/test_dashboard_truth.py",
       "dashboard/test_fetch_data.py",
@@ -115,6 +143,9 @@
       "scripts/evidence_scout.py",
       "scripts/evidence_scout_cron.py",
       "scripts/room_climate_control.py",
+      "scripts/device_baseline_guard.py",
+      "scripts/encrypted_backup.py",
+      "scripts/restore_preflight.py",
       "scripts/wellness_coach_context.py",
       "scripts/quota_watch.py",
       "scripts/brief_context.py",
@@ -151,6 +182,13 @@
       "skills/domain/chief-of-staff/scripts/source-url-capture.py",
       "skills/domain/evidence-analysis/scripts/analyze_history.py",
       "skills/domain/evidence-analysis/scripts/fetch_history.py"
+    ],
+    "new_private_adapter_families": [
+      "skills/domain/mail-guardian/implementation/*.py",
+      "skills/domain/device-baseline/implementation/*.py",
+      "skills/domain/backup-recovery/implementation/*.py",
+      "skills/domain/curated-memory/implementation/*.py",
+      "skills/domain/message-routing/implementation/*.py"
     ]
   },
   "excluded_by_design": [

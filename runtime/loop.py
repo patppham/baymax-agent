@@ -1,4 +1,4 @@
-"""A provider-neutral Observe -> Verify -> Decide -> Act -> Learn loop."""
+"""A provider-neutral Observe -> Verify -> Decide -> Act -> Reconcile loop."""
 
 from __future__ import annotations
 
@@ -188,7 +188,7 @@ def run_cycle(
         if repairs
         else copy.deepcopy(completion)
     )
-    learn = {
+    reconcile = {
         "repairs": repairs,
         "completion": repaired_completion,
     }
@@ -212,13 +212,13 @@ def run_cycle(
             "proposals": proposals,
         },
         "act": act,
-        "learn": learn,
+        "reconcile": reconcile,
         "trace": [
             {"stage": "observe", "status": "complete"},
             {"stage": "verify", "status": verification["status"]},
             {"stage": "decide", "status": "invoked" if decision_invoked else "skipped"},
             {"stage": "act", "status": act["status"]},
-            {"stage": "learn", "status": "complete"},
+            {"stage": "reconcile", "status": "complete"},
         ],
     }
     cycle["outcome"] = summarize_cycle(cycle)

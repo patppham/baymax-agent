@@ -13,8 +13,13 @@ and contract library, not as a data export.
 | Daily brief, coaching, scout, and proposal loops | `runtime/loop.py` plus `prompts/cron/*` | Private prompt values, model calls, evidence policy, and domain-specific judgment |
 | Local-versus-judgment model routing | `runtime/routing.py` | Provider names, credentials, cost limits, and fallback behavior |
 | Reply and approval handling | `runtime/delivery.py` plus `runtime/loop.py` | Messaging connectors, identity routing, and natural-language parsing |
+| Audience-aware messaging | `skills/message-routing/SKILL.md` | Provider-specific routes, recipients, reply anchors, and delivery credentials |
+| Curated project recall | `skills/curated-memory/SKILL.md` | Private notes, aliases, provenance, and retention policy |
 | Background work lanes | `runtime/parallel.py` | Actual subagents, connector calls, retries, and cancellation policy |
 | Local climate acquisition and control | `skills/sensor-history/SKILL.md` plus `skills/climate-control-safety/SKILL.md` | Sensor identities, verified command packets, thresholds, presence devices, and private alert routes |
+| Device baseline protection | `skills/device-baseline-guard/SKILL.md` | Device identity, authenticated status adapter, baseline, and private correction policy |
+| Guarded inbox automation | `skills/mail-guardian/SKILL.md` | Mail credentials, sender rules, bounded classifier, quarantine, and user review queue |
+| Encrypted backup and restore checks | `skills/backup-recovery/SKILL.md` | Encryption keys, remote storage, archive selection, and recovery destination |
 | Dashboard and job health | `scripts/validate_public_surface.py` | Live probes, watchdogs, delivery telemetry, and private alert routes |
 | Persona and orchestration guidance | `SOUL.md` and `.hermes.md` | Household identity, preferences, memory, paths, accounts, and local policy |
 | Household skills | `skills/*/SKILL.md` | Private prompts, preferences, source references, personal policy, and credentials |
@@ -41,7 +46,9 @@ An agent building a private mirror should work in this order:
 6. Map the generic lanes in `cron/jobs.json` to private scripts and providers.
 7. Add private skills and prompts using the public skill contracts as their
    safety and mutation boundaries.
-8. Add action adapters last. They may consume an authorized proposal, but the
+8. Configure encrypted backup and prove a non-destructive restore preflight
+   before relying on the deployment for durable state.
+9. Add action adapters last. They may consume an authorized proposal, but the
    public contract never supplies credentials or production destinations.
 
 ## What must stay private

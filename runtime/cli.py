@@ -1,4 +1,4 @@
-"""Small read-only demo CLI for the public runtime patterns."""
+"""Small read-only demo CLI for the Baymax Agent public runtime."""
 
 from __future__ import annotations
 

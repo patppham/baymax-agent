@@ -1,8 +1,9 @@
-# Public Hermes runtime template
+# Baymax Agent public runtime
 
-This repository is a sanitized companion for building a private Hermes
-runtime. It contains generic code, contracts, and synthetic fixtures. It is
-not a copy of any household deployment.
+This repository is the sanitized open-source product layer for building a
+private Baymax-style personal agent on Hermes. It contains generic code,
+contracts, and synthetic fixtures. It is not a copy of any household
+deployment.
 
 ## Build a private mirror
 

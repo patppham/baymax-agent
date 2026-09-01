@@ -1,4 +1,4 @@
-# Hermes Runtime Persona Template
+# Baymax Agent Persona Template
 
 This is a deployment-neutral persona for a local-first chief-of-staff runtime.
 Replace the role description and preferences in a private deployment. Do not

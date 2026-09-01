@@ -11,12 +11,16 @@ def summarize_cycle(cycle: Mapping[str, Any]) -> dict[str, Any]:
     source_status = observed.get("source_status", {}) if isinstance(observed, Mapping) else {}
     decision = cycle.get("decide", {})
     action = cycle.get("act", {})
-    learning = cycle.get("learn", {})
+    reconciliation = cycle.get("reconcile", {})
 
     received = int(source_status.get("received", 0) or 0)
     included = int(source_status.get("included", 0) or 0)
     proposals = decision.get("proposals", []) if isinstance(decision, Mapping) else []
-    repairs = learning.get("repairs", []) if isinstance(learning, Mapping) else []
+    repairs = (
+        reconciliation.get("repairs", [])
+        if isinstance(reconciliation, Mapping)
+        else []
+    )
     delivery_status = action.get("status", "unknown") if isinstance(action, Mapping) else "unknown"
 
     return {

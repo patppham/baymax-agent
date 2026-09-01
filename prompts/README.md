@@ -16,6 +16,10 @@ the reusable decisions that make the loops useful:
 - require approval before external action; and
 - report observed facts separately from inference or hypothesis.
 
+Deterministic jobs may also protect a configured inbox, device baseline, or
+backup path. Their public prompts describe the boundary only; credentials,
+targets, commands, encryption material, and live data remain private.
+
 The cron manifest references one prompt for every job. A private mirror can
 extend a template with local sources, names, schedules, and routing only in a
 private file or generated configuration layer.

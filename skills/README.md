@@ -16,6 +16,9 @@ skills:
 - `household-chief-of-staff/` composes sources, loops, audience boundaries, and
   quiet behavior.
 - `email-triage/` preserves the staged metadata-first classifier pipeline.
+- `mail-guardian/` adds deterministic-first, high-confidence inbox cleanup.
+- `message-routing/` preserves private/shared audiences across chat providers.
+- `curated-memory/` keeps bounded project recall separate from canonical state.
 - `source-projection/` covers registered adapters and generated projections.
 - `state-reconciliation/` covers reply closure and completion audits.
 - `wellness-evidence/`, `sensor-history/`, `climate-control-safety/`, and
@@ -23,6 +26,10 @@ skills:
   exposing their integrations.
 - `home-design-director/` covers evidence-grounded room planning, comparison,
   rendering, and approval-gated procurement.
+- `device-baseline-guard/` covers authenticated state drift without exposing
+  private devices or control commands.
+- `backup-recovery/` covers encrypted archives and non-destructive restore
+  preflight checks.
 - `document-routing/` covers private manifest-first document retrieval.
 - `reference-grounding/` covers local references plus current authoritative
   sources for consequential claims.
