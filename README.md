@@ -10,6 +10,7 @@
 
 <p align="center">
   <a href="https://ai.patonpoints.com/projects/baymax/">Product story</a> ·
+  <a href="#a-personal-agent-in-imessage">iMessage</a> ·
   <a href="#quick-start">Quick start</a> ·
   <a href="docs/architecture.md">Architecture</a> ·
   <a href="#privacy-boundary">Privacy boundary</a>
@@ -32,6 +33,49 @@ working dependency-free runtime primitives, synthetic examples, persona and
 skill contracts, and disabled-by-default scheduled workflows. Private accounts,
 records, credentials, destinations, and action adapters are deliberately not
 published.
+
+## A personal agent in iMessage
+
+Baymax appears as its own contact in Apple Messages. In the reference
+deployment, a self-hosted BlueBubbles bridge makes iMessage the primary surface
+for live conversations and scheduled updates—so briefs, questions, approvals,
+and follow-through arrive in a conversation the household already uses, not in
+another app that needs attention.
+
+- **One identity, multiple audiences.** Personal recovery, financial, and admin
+  context stays in 1:1 threads; shared plans go to the household conversation.
+- **Replies close loops.** A response is matched to the question or proposal
+  that produced it, deduplicated, and reconciled once.
+- **Proactive, not chatty.** Scheduled workflows use the same Baymax identity,
+  but no useful change means no message.
+- **Transport stays replaceable.** Audience and approval rules survive a move
+  to another messaging provider.
+
+> **Public/private boundary:** this repository includes the provider-neutral
+> routing and reconciliation contracts. The BlueBubbles server, credentials,
+> destination identifiers, and private Hermes transport adapter are deliberately
+> excluded. The reference deployment uses Telegram only as an independent
+> emergency fallback.
+
+## Product in action
+
+These are sanitized product mocks from the
+[Baymax case study](https://ai.patonpoints.com/projects/baymax/).
+
+<p align="center">
+  <img src="docs/images/baymax-agent-hero.png" alt="Baymax turns calendar, inbox, health, and home context into one prepared household decision" width="100%">
+</p>
+
+<table>
+  <tr>
+    <th width="38%">A brief inside the conversation</th>
+    <th width="62%">Privacy is a routing decision</th>
+  </tr>
+  <tr>
+    <td><img src="docs/images/baymax-agent-daily-brief.png" alt="Baymax daily brief shown as a concise message" width="100%"></td>
+    <td><img src="docs/images/baymax-agent-audience-routing.png" alt="Shared, private, and quiet-by-default audience routing" width="100%"></td>
+  </tr>
+</table>
 
 ## What Baymax does
 

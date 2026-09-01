@@ -48,6 +48,13 @@ Messaging adapters preserve audience as part of the delivery contract. A
 provider change must not collapse owner-private and shared routes, and replies
 must reconcile against the question or proposal that produced them.
 
+The reference deployment presents Baymax as a dedicated Apple Messages contact
+through a self-hosted BlueBubbles bridge. It uses separate 1:1 and shared
+household conversations as explicit routing destinations. That bridge, its
+credentials and destination identifiers, and the maintained private transport
+adapter are deployment infrastructure rather than part of this public package;
+the public runtime keeps the same contract usable with other providers.
+
 Deterministic device controllers follow a stricter boundary: record validated
 sensor evidence before deciding, select only physically verified full-state
 commands, enforce cooldown and command caps, and fail closed when evidence,
